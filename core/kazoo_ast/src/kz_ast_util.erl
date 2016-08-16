@@ -18,6 +18,8 @@
 
 -include_lib("kazoo/include/kz_types.hrl").
 -include_lib("kazoo_ast/include/kz_ast.hrl").
+-include_lib("kazoo/include/kz_types.hrl").
+
 
 -type ast() :: [erl_parse:abstract_form()].
 -type abstract_code() :: {'raw_abstract_v1', ast()}.
@@ -133,7 +135,7 @@ siblings_of(App) ->
 dir_to_app_name(Dir) ->
     kz_term:to_atom(filename:basename(Dir), 'true').
 
--spec app_modules(atom()) -> [atom()].
+-spec app_modules(atom()) -> atoms().
 app_modules(App) ->
     case application:get_key(App, 'modules') of
         {'ok', Modules} -> Modules;
