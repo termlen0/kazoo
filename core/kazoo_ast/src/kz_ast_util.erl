@@ -39,6 +39,8 @@ module_ast(M) ->
 
 -spec add_module_ast(module_ast(), module(), abstract_code()) -> module_ast().
 add_module_ast(ModAST, Module, {'raw_abstract_v1', Attributes}) ->
+    add_module_ast(ModAST, Module, Attributes);
+add_module_ast(ModAST, Module, Attributes) ->
     lists:foldl(fun(A, Acc) ->
                         add_module_ast_fold(A, Module, Acc)
                 end
