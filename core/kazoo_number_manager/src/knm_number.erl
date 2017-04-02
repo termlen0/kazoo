@@ -43,7 +43,6 @@
 -export([ensure_can_create/2]).
 -endif.
 
--include_lib("kazoo_stdlib/include/kazoo_json.hrl").
 -include("knm.hrl").
 
 -record(knm_number, {knm_phone_number :: knm_phone_number:knm_phone_number()
