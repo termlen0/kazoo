@@ -12,6 +12,7 @@
                  , kazoo
                  , kazoo_data
                  , kazoo_web
+                 ,kazoo_json
 
                  , lager
                  ]}
