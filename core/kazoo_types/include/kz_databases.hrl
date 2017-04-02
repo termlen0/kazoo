@@ -55,5 +55,10 @@
                        ,?KZ_TASKS_DB
                        ]).
 
+
+-define(KNM_DB_PREFIX, "numbers/+").
+-define(KNM_DB_PREFIX_ENCODED, "numbers%2F%2B").
+-define(KNM_DB_PREFIX_encoded, "numbers%2f%2b").
+
 -define(KZ_DATABASES_HRL, 'true').
 -endif.
