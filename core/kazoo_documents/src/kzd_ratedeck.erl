@@ -19,7 +19,7 @@
         ]).
 
 -include("kz_documents.hrl").
--include_lib("kazoo_documents/include/kzd_ratedeck.hrl").
+-include_lib("kazoo_types/include/kzd_ratedeck.hrl").
 
 -type doc() :: kz_json:object().
 -export_type([doc/0]).

@@ -12,7 +12,7 @@
         ]).
 
 -include_lib("kazoo_number_manager/include/knm_phone_number.hrl").
--include_lib("kazoo_documents/include/kzd_ratedeck.hrl").
+-include_lib("kazoo_types/include/kzd_ratedeck.hrl").
 -include("kz_data.hrl").
 
 %%------------------------------------------------------------------------------
