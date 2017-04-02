@@ -60,3 +60,4 @@ compile_commands.json
 /applications/tasks/src/modules/kt_rates.hrl
 /applications/tasks/src/task_modules.hrl
 /applications/teletype/src/teletype_default_modules.hrl
+_build/
