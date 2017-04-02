@@ -12,7 +12,6 @@
 -export([phone_number_activation_charge/2]).
 
 -include("kazoo_services.hrl").
--include_lib("kazoo_number_manager/include/knm_phone_number.hrl").
 
 -define(NUMBER_SERVICES, <<"number_services">>).
 -define(PHONE_NUMBERS, <<"phone_numbers">>).
