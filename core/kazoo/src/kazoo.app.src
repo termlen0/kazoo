@@ -11,5 +11,7 @@
                  , observer
 
                  , lager
+                 ,kazoo_types
+                 ,kazoo_json
                  ]}
  ]}.

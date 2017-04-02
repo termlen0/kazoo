@@ -10,7 +10,7 @@
 -export([extra_validator/2
         ]).
 
--include_lib("kazoo/include/kz_types.hrl").
+-include_lib("kazoo_types/include/kz_types.hrl").
 
 
 -spec extra_validator(jesse:json_term(), jesse_state:state()) -> jesse_state:state().

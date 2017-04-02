@@ -1,0 +1,8 @@
+{application, kazoo_types
+,[{description, "Kazoo types"}
+ ,{vsn, "4.0.0"}
+ ,{registered, [ ]}
+ ,{applications, [kernel
+                 ,stdlib
+                 ]}
+ ]}.
