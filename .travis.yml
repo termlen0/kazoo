@@ -34,6 +34,7 @@ install:
 
 script:
   - rebar3 compile
+  - rebar3 eunit
   - # make compile-test
   - # make eunit
   - make deps
