@@ -11,7 +11,7 @@
 -module(kz_util_test).
 
 -include_lib("kazoo_types/include/kz_types.hrl").
--include("kz_databases.hrl").
+-include_lib("kazoo_types/include/kz_databases.hrl").
 
 -ifdef(PROPER).
 -include_lib("proper/include/proper.hrl").
