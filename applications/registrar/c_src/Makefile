@@ -9,6 +9,32 @@ ERL_INTERFACE_LIB_DIR = $(shell $(BEGIN) 'io:format(code:lib_dir(erl_interface, 
 
 all: $(ROOT)/priv/comp128.so
 
+ifeq ($(PLATFORM),)
+    UNAME_S := $(shell uname -s)
+
+    ifeq ($(UNAME_S),Linux)
+        PLATFORM = linux
+    else ifeq ($(UNAME_S),Darwin)
+        PLATFORM = darwin
+    else ifeq ($(UNAME_S),SunOS)
+        PLATFORM = solaris
+    else ifeq ($(UNAME_S),GNU)
+        PLATFORM = gnu
+    else ifeq ($(UNAME_S),FreeBSD)
+        PLATFORM = freebsd
+    else ifeq ($(UNAME_S),NetBSD)
+        PLATFORM = netbsd
+    else ifeq ($(UNAME_S),OpenBSD)
+        PLATFORM = openbsd
+    else ifeq ($(UNAME_S),DragonFly)
+        PLATFORM = dragonfly
+    else
+        $(error Unable to detect platform.)
+    endif
+
+    export PLATFORM
+endif
+
 ifeq ($(PLATFORM),darwin)
 	CFLAGS = -c -O3 -std=c99 -fstack-protector -Wall -Wmissing-prototypes -fPIC
 	LDFLAGS = -bundle -flat_namespace -undefined suppress
