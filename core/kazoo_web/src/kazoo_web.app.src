@@ -1,5 +1,4 @@
-{application, kazoo_web, [
-                          {description, "Utility functions for HTTP / HTML manipulation"},
+{application, kazoo_web, [{description, "Utility functions for HTTP / HTML manipulation"},
                           {vsn, "4.0.0"},
                           {modules, []},
                           {registered, [ ]},
@@ -10,5 +9,6 @@
                                          , public_key
                                          , ssl
                                          , inets
+                                         ,kazoo_stdlib
                                          ]}
                          ]}.
