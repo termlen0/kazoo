@@ -43,31 +43,21 @@ stop(#state{}=_State) ->
     'ok'.
 
 read_service_plan(State) ->
-    ServicePlan1 = filename:join([priv_dir(), "example_service_plan_1.json"]),
-    JObj = read_json(ServicePlan1),
-
+    JObj = read_json("example_service_plan_1.json"),
     State#state{service_plan_jobj=JObj}.
 
 read_services(#state{service_plan_jobj=ServicePlan}=State) ->
-    ServicesPath = filename:join([priv_dir(), "example_account_services.json"]),
-
-    JObj = read_json(ServicesPath),
-
+    JObj = read_json("example_account_services.json"),
     Services = kz_services:from_service_json(JObj, 'false'),
-
     Overrides = kzd_services:plan_overrides(JObj, kz_doc:id(ServicePlan)),
     AccountPlan = kzd_service_plan:merge_overrides(ServicePlan, Overrides),
-
     State#state{services_jobj=JObj
                ,services=Services
                ,account_plan=AccountPlan
                }.
 
-priv_dir() ->
-    {'ok', AppDir} = file:get_cwd(),
-    filename:join([AppDir, "priv"]).
-
-read_json(Path) ->
+read_json(File) ->
+    Path = filename:join(code:priv_dir(kazoo_services), File),
     {'ok', JSON} = file:read_file(Path),
     kz_json:decode(JSON).
 
