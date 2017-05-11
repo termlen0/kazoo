@@ -6,5 +6,6 @@
  ,{registered, [ ]}
  ,{applications, [ kernel
                  , stdlib
+                 ,kazoo_stdlib
                  ]}
  ]}.
