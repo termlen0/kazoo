@@ -9,6 +9,7 @@
 
 -export([send_email/3
         ,send_update/3, send_update/4
+        ,maybe_send_update/3
         ,render_template/3
         ,normalize_proplist/1
         ,json_to_template_props/1
@@ -85,6 +86,23 @@ send_update(RespQ, MsgId, Status, Msg) ->
              ]),
     lager:debug("notification update (~s) sending to ~s", [Status, RespQ]),
     kapi_notifications:publish_notify_update(RespQ, Prop).
+
+-spec maybe_send_update(send_email_return() | send_email_returns(), ne_binary(), ne_binary()) -> 'ok';
+maybe_send_update('ok', RespQ, MsgId) -> notify_util:send_update(RespQ, MsgId, <<"completed">>);
+maybe_send_update({'error', Reason}, RespQ, MsgId) -> notify_util:send_update(RespQ, MsgId, <<"failed">>, Reason);
+maybe_send_update([LastResp|_]=Responses, RespQ, MsgId) ->
+    case lists:any(fun('ok') -> 'true';
+                      ({'error', _}) -> 'false'
+                   end
+                  ,Responses
+                  )
+    of
+        'true' -> notify_util:send_update(RespQ, MsgId, <<"completed">>);
+        'false' ->
+            {'error', Reason} = LastResp,
+            notify_util:send_update(RespQ, MsgId, <<"failed">>, Reason)
+    end.
+
 
 %%--------------------------------------------------------------------
 %% @private

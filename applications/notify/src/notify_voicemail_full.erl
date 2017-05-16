@@ -56,6 +56,10 @@ handle_req(JObj, _Props) ->
 send(JObj, Account) ->
     lager:debug("a vm_full notice has been received, sending email notification"),
 
+    RespQ = kz_json:get_value(<<"Server-ID">>, JObj),
+    MsgId = kz_json:get_value(<<"Msg-ID">>, JObj),
+    notify_util:send_update(RespQ, MsgId, <<"pending">>),
+
     Props = create_template_props(JObj),
 
     CustomTxtTemplate = kz_json:get_value([<<"notifications">>, <<"vm_full">>, <<"email_text_template">>], Account),
@@ -80,7 +84,10 @@ send(JObj, Account) ->
                                  ,get_user_email(UserJObj, Account)
                                  ),
 
-    build_and_send_email(TxtBody, HTMLBody, Subject, Emails, Props).
+    notify_util:maybe_send_update(build_and_send_email(TxtBody, HTMLBody, Subject, Emails, Props)
+                                 ,RespQ
+                                 ,MsgId
+                                 ).
 
 -spec get_user_email(kz_json:object(), kz_json:object()) -> api_binary().
 get_user_email(UserJObj, Account) ->
@@ -159,9 +166,9 @@ get_vm_doc(JObj) ->
 %% process the AMQP requests
 %% @end
 %%--------------------------------------------------------------------
--spec build_and_send_email(iolist(), iolist(), iolist(), ne_binary() | ne_binaries(), kz_proplist()) -> 'ok'.
+-spec build_and_send_email(iolist(), iolist(), iolist(), ne_binary() | ne_binaries(), kz_proplist()) -> send_email_return().
 build_and_send_email(TxtBody, HTMLBody, Subject, To, Props) when is_list(To) ->
-    _ = [build_and_send_email(TxtBody, HTMLBody, Subject, T, Props) || T <- To];
+    [build_and_send_email(TxtBody, HTMLBody, Subject, T, Props) || T <- To];
 build_and_send_email(TxtBody, HTMLBody, Subject, To, Props) ->
     Service = props:get_value(<<"service">>, Props),
 

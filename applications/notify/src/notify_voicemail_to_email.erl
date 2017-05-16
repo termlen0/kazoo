@@ -66,7 +66,8 @@ continue_processing(JObj, AccountDb, VMBox, Emails) ->
     AccountDb = kz_util:format_account_db(kz_json:get_value(<<"Account-ID">>, JObj)),
 
 
-    'ok' = notify_util:send_update(RespQ, MsgId, <<"pending">>),
+    notify_util:send_update(RespQ, MsgId, <<"pending">>),
+
     lager:debug("VM->Email enabled for user, sending to ~p", [Emails]),
     {'ok', AccountJObj} = kz_account:fetch(AccountDb),
     Timezone = kzd_voicemail_box:timezone(VMBox, <<"UTC">>),
@@ -168,7 +169,6 @@ magic_hash(Event) ->
 %% process the AMQP requests
 %% @end
 %%--------------------------------------------------------------------
--type respond_to() :: {api_binary(), ne_binary()}.
 -spec build_and_send_email(iolist(), iolist(), iolist(), ne_binaries(), kz_proplist(), respond_to()) -> 'ok'.
 build_and_send_email(TxtBody, HTMLBody, Subject, To, Props, {RespQ, MsgId}) ->
     Voicemail = props:get_value(<<"voicemail">>, Props),
@@ -230,10 +230,10 @@ build_and_send_email(TxtBody, HTMLBody, Subject, To, Props, {RespQ, MsgId}) ->
               }
               || T <- To
              ],
-    case [notify_util:send_email(From, T, Email) || {T, Email} <- Emails] of
-        ['ok'|_] -> notify_util:send_update(RespQ, MsgId, <<"completed">>);
-        [{'error', Reason}|_] -> notify_util:send_update(RespQ, MsgId, <<"failed">>, Reason)
-    end.
+    notify_util:maybe_send_update(notify_util:send_email(From, T, Email) || {T, Email} <- Emails]
+                                 ,RespQ
+                                 ,MsgId
+                                 }.
 
 %%--------------------------------------------------------------------
 %% @private
